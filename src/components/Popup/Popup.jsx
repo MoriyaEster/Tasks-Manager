@@ -5,6 +5,7 @@ export default function Popup(props) {
     const [tittle, setTittle] = useState('');
     const [status, setStatus] = useState(1);
     const [body, setBody] = useState('');
+    const [date, setDate] = useState('');
 
     function handleStatus(statusValue) {
         if (statusValue === 'TODO') {
@@ -23,7 +24,7 @@ export default function Popup(props) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        props.handleAddTask(tittle, status, body);
+        props.handleAddTask(tittle, status, body, date);
         props.handleClosePopup();
     }
 
@@ -31,9 +32,9 @@ export default function Popup(props) {
         <div className="popup">
 
             <h2>Add Task</h2>
-            
+
             <form className="add-task-form" onSubmit={handleSubmit}>
-                <label>Tittle</label>
+                <label>Title</label>
                 <input
                     type="text"
                     required
@@ -60,6 +61,15 @@ export default function Popup(props) {
                     value={body}
                     onChange={(e) => setBody(e.target.value)}
                 ></textarea>
+
+                <label>Date</label>
+                <input
+                    type="date"
+                    required
+                    value={date}
+                    min={new Date().toISOString().split('T')[0]}
+                    onChange={(e) => setDate(e.target.value)}
+                />
 
                 <button className="button-add-task" type="submit">Add</button>
                 <button className="close-popup" type="button" onClick={props.handleClosePopup}>Close</button>

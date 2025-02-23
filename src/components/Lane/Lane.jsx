@@ -23,6 +23,7 @@ export default function Lane(props) {
                         id={task.id}
                         tittle={task.tittle}
                         body={task.body}
+                        time={task.time}
                         laneId={task.laneId}
                         handleOnDragStart={props.handleOnDragStart}
                         handleApproveTask={props.handleApproveTask}

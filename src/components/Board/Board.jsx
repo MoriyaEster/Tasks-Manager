@@ -41,24 +41,28 @@ export default function Board() {
             id: 1,
             tittle: "Task 1",
             body: "11111111111",
+            time: "25/2/2025",
             laneId: 1
         },
         {
             id: 2,
             tittle: "Task 2",
             body: "222222222",
+            time: "23/2/2025",
             laneId: 2
         },
         {
             id: 3,
             tittle: "Task 3",
             body: "3333333333333",
+            time: "12/2/2025",
             laneId: 1
         },
         {
             id: 4,
             tittle: "Task 4",
             body: "44444444444444",
+            time: "25/3/2025",
             laneId: 3
 
         }
@@ -81,7 +85,7 @@ export default function Board() {
 
         const task = tasks.find((task) => task.id === id)
 
-        if (task) {
+        if (task && task.laneId !== 4) {
             const newTasks = tasks.filter((task) => task.id !== id)
             setTasks(newTasks.concat({ ...task, laneId: 4 }))
         }
@@ -98,12 +102,13 @@ export default function Board() {
         }
     }
 
-    function handleAddTask(tittle, status, body) {
+    function handleAddTask(tittle, status, body, date) {
         setCounterId((prev) => prev + 1)
         const newTask = {
             id: counterId,
             tittle: tittle,
             body: body,
+            time: date,
             laneId: status
         }
         setTasks((prev) => [...prev, newTask])
@@ -112,6 +117,8 @@ export default function Board() {
     function handleOpenPopup() {
         setIsPopupVisible(true)
     }
+
+    // console.log(new Date().toLocaleDateString())
 
     return (
         <div className="board">
