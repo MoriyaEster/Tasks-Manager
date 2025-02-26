@@ -1,17 +1,18 @@
 import "./Lane.css"
 import Task from "../Task/Task";
 import { nanoid } from 'nanoid'
+import { useDroppable } from "@dnd-kit/core";
 
 
 
 export default function Lane(props) {
 
+    const { setNodeRef } = useDroppable({
+        id: props.id
+    })
+
     return (
-        <div
-            className="lane"
-            onDragOver={props.handleDragOver}
-            onDrop={(event) => props.handleOnDragEnd(event, props.id)}
-        >
+        <div className="lane" ref={setNodeRef}>
             <header>
                 <h1>{props.tittle}</h1>
             </header>
@@ -19,13 +20,12 @@ export default function Lane(props) {
             {props.tasks.map(task => {
                 return (
                     <Task
-                        key={nanoid()}
+                        key={task.id}
                         id={task.id}
                         tittle={task.tittle}
                         body={task.body}
                         time={task.time}
                         laneId={task.laneId}
-                        handleOnDragStart={props.handleOnDragStart}
                         handleApproveTask={props.handleApproveTask}
                         handleDeleteTask={props.handleDeleteTask}
                     />

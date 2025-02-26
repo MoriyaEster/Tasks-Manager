@@ -4,6 +4,7 @@ import Lane from "../Lane/Lane"
 import Popup from "../Popup/Popup"
 import { nanoid } from 'nanoid'
 import Dialog from '@mui/material/Dialog';
+import { DndContext } from '@dnd-kit/core';
 
 const lanes = [
     {
@@ -25,18 +26,10 @@ const lanes = [
     }
 ]
 
-function handleOnDragStart(event, id) {
-    event.dataTransfer.setData("id", id)
-}
-
-function handleDragOver(event) {
-    event.preventDefault()
-}
-
 export default function Board() {
 
     const [counterId, setCounterId] = useState(DEFAULT_COUNTER_TASKS)
-    
+
     const [tasks, setTasks] = useState([
         {
             id: 1,
@@ -71,15 +64,24 @@ export default function Board() {
     const [isPopupVisible, setIsPopupVisible] = useState(false)
 
 
-    function handleOnDragEnd(event, laneId) {
-        const id = parseInt(event.dataTransfer.getData("id"))
+    function handleOnDragEnd(event) {
+        const { active , over } = event
 
-        const task = tasks.find((task) => task.id === id)
+        if (!over) return
 
-        if (task && task.laneId !== laneId) {
-            const newTasks = tasks.filter((task) => task.id !== id)
-            setTasks(newTasks.concat({ ...task, laneId }))
-        }
+        const taskId = active.id
+        const laneId = over.id
+
+        setTasks(() =>
+            tasks.map((task) =>
+                task.id === taskId
+                    ? {
+                        ...task,
+                        laneId: laneId
+                    }
+                    : task
+            )
+        )
     }
 
     function handleApproveTask(id) {
@@ -123,20 +125,19 @@ export default function Board() {
 
     return (
         <div className="board">
-            {lanes.map(lane => {
-                return (
-                    <Lane
-                        key={nanoid()}
-                        id={lane.id}
-                        tittle={lane.tittle}
-                        tasks={tasks.filter(task => task.laneId === lane.id)}
-                        handleOnDragStart={handleOnDragStart}
-                        handleDragOver={handleDragOver}
-                        handleOnDragEnd={handleOnDragEnd}
-                        handleApproveTask={handleApproveTask}
-                        handleDeleteTask={handleDeleteTask}
-                    />);
-            })}
+            <DndContext onDragEnd={handleOnDragEnd}>
+                {lanes.map(lane => {
+                    return (
+                        <Lane
+                            key={lane.id}
+                            id={lane.id}
+                            tittle={lane.tittle}
+                            tasks={tasks.filter(task => task.laneId === lane.id)}
+                            handleApproveTask={handleApproveTask}
+                            handleDeleteTask={handleDeleteTask}
+                        />);
+                })}
+            </DndContext>
             {isPopupVisible &&
                 <Dialog onClose={() => setIsPopupVisible(false)} open={true}>
                     <Popup

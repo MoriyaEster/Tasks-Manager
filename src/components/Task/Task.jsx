@@ -3,6 +3,7 @@ import { clsx } from "clsx"
 import "./Task.css"
 import Popup from "../Popup/Popup";
 import PopupDate from "../Popup/PopupDate";
+import { useDraggable } from "@dnd-kit/core";
 
 export default function Task(props) {
 
@@ -17,15 +18,24 @@ export default function Task(props) {
         setUpdateDate(false);
     }
 
+    const { attributes, listeners, setNodeRef, transform} = useDraggable ({
+        id: props.id
+    })
+
+    const style = transform 
+            ? {transform: `translate(${transform.x}px, ${transform.y}px)`} 
+            : undefined
+
     return (
         <div
             className={clsx("task", {
                 late: time < new Date().toISOString().split('T')[0] && props.laneId !== 4,
                 done: props.laneId === 4
-            })
-            }
-            draggable
-            onDragStart={(event) => props.handleOnDragStart(event, props.id)}
+            })}
+            ref={setNodeRef}
+            {...attributes}
+            {...listeners}
+            style={style}
         >
             <h2>{props.tittle}</h2>
             <h3>{props.body}</h3>
