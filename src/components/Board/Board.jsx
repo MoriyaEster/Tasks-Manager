@@ -3,6 +3,7 @@ import "./Board.css"
 import Lane from "../Lane/Lane"
 import Popup from "../Popup/Popup"
 import { nanoid } from 'nanoid'
+import Dialog from '@mui/material/Dialog';
 
 const lanes = [
     {
@@ -30,12 +31,12 @@ function handleOnDragStart(event, id) {
 
 function handleDragOver(event) {
     event.preventDefault()
-
 }
 
 export default function Board() {
 
-    const [counterId, setCounterId] = useState(5)
+    const [counterId, setCounterId] = useState(DEFAULT_COUNTER_TASKS)
+    
     const [tasks, setTasks] = useState([
         {
             id: 1,
@@ -137,12 +138,12 @@ export default function Board() {
                     />);
             })}
             {isPopupVisible &&
-                <Popup
-                    className="popup"
-                    handleClosePopup={() => setIsPopupVisible(false)}
-                    handleAddTask={handleAddTask}
-                />
-            }
+                <Dialog onClose={() => setIsPopupVisible(false)} open={true}>
+                    <Popup
+                        className="popup"
+                        handleAddTask={handleAddTask}
+                    />
+                </Dialog>}
             {!isPopupVisible &&
                 <button
                     className="button-add-task"
@@ -152,3 +153,5 @@ export default function Board() {
         </div>
     )
 }
+
+const DEFAULT_COUNTER_TASKS = 5 
