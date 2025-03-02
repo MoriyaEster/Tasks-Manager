@@ -2,7 +2,6 @@ import React, { useState, createContext, useEffect } from "react"
 import { BoardStyled, ButtonAddTask } from "./styles/Board.styled"
 import Lane from "./Lane"
 import TaskDialog from "./TaskDialog"
-import Dialog from '@mui/material/Dialog';
 import { DndContext } from '@dnd-kit/core';
 import { use } from "react";
 import useDragAndDrop from "./hooks/useDragAndDrop";

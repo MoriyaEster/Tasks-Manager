@@ -11,9 +11,12 @@ export const BoardStyled = styled.div`
 export const ButtonAddTask = styled.button`
     background-color: #f1356d;
     border-radius: 5px;
-    border-color: #fff;
-    height: 40px;
-    justify-items: center;
-    
+    height: 70px;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: center;
+
     
 `;

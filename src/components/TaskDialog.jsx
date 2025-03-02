@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { DialogStyled, LabelStyled, TitleStyled, FormStyled, InputStyled, TextareaStyled, SelectStyled, ButtonStyled } from './styles/Dialog.styled';
+import Dialog from '@mui/material/Dialog';
+import { LabelStyled, TitleStyled, FormStyled, InputStyled, TextareaStyled, SelectStyled, ButtonStyled } from './styles/Dialog.styled';
 
 export default function TaskDialog(props) {
     const [title, settitle] = useState('');
@@ -29,7 +30,9 @@ export default function TaskDialog(props) {
     }
 
     return (
-        <DialogStyled open={props.open} onClose={props.handleCloseDialog}>
+        <Dialog open={props.open} onClose={props.handleCloseDialog}
+            maxWidth="md"
+            fullWidth>
 
             <TitleStyled>Add Task</TitleStyled>
 
@@ -74,7 +77,7 @@ export default function TaskDialog(props) {
                 <ButtonStyled type="submit">Add</ButtonStyled>
                 <ButtonStyled type="button" onClick={props.handleCloseDialog}>Close</ButtonStyled>
             </FormStyled>
-        </DialogStyled>
+        </Dialog>
     );
 }
 

@@ -1,22 +1,20 @@
 import styled from 'styled-components';
 
-export const DialogStyled = styled.dialog`
-    position: fixed;
-    margin: 0 auto;
-    text-align: center;
-    top: 60%;
-    left: 40%;
-    background-color: #fff;
-`;
-
 export const LabelStyled = styled.label`
     display: block;
     text-align: left;
+    font-size: 1.5em;
+    font-weight: bold;
 `;
 
 export const TitleStyled = styled.h2`
     margin-bottom: 30px;
     color: #f1356d;
+    font-size: 2em;
+    display: flex;
+    justify-content: center;
+
+
 `;
 
 export const FormStyled = styled.form`
@@ -33,6 +31,7 @@ export const InputStyled = styled.input`
     border-radius: 4px;
     box-sizing: border-box;
     display: block;
+    font-size: 1.8em;
 `;
 
 export const TextareaStyled = styled.textarea`
@@ -43,6 +42,8 @@ export const TextareaStyled = styled.textarea`
     border-radius: 4px;
     box-sizing: border-box;
     display: block;
+    font-family: 'Arial', sans-serif;
+    font-size: 1.8em;
 `;
 
 export const SelectStyled = styled.select`
@@ -53,6 +54,9 @@ export const SelectStyled = styled.select`
     border-radius: 4px;
     box-sizing: border-box;
     display: block;
+    display: flex;
+    justify-content: center;
+    font-size: 1.2em;
 `;
 
 export const ButtonStyled = styled.button`
