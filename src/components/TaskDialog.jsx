@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { PopupStyled, LabelStyled, TitleStyled, InputStyled, TextareaStyled, SelectStyled, ButtonStyled } from './styles/Popup.styled';
+import { DialogStyled, LabelStyled, TitleStyled, FormStyled, InputStyled, TextareaStyled, SelectStyled, ButtonStyled } from './styles/Dialog.styled';
 
-export default function Popup(props) {
-    const [tittle, setTittle] = useState('');
+export default function TaskDialog(props) {
+    const [title, settitle] = useState('');
     const [status, setStatus] = useState(1);
     const [body, setBody] = useState('');
     const [date, setDate] = useState('');
@@ -24,22 +24,22 @@ export default function Popup(props) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        props.handleAddTask(tittle, status, body, date);
-        props.handleClosePopup();
+        props.addTask(title, status, body, date);
+        props.handleCloseDialog();
     }
 
     return (
-        <PopupStyled>
+        <DialogStyled open={props.open} onClose={props.handleCloseDialog}>
 
             <TitleStyled>Add Task</TitleStyled>
 
-            <form className="add-task-form" onSubmit={handleSubmit}>
+            <FormStyled onSubmit={handleSubmit}>
                 <LabelStyled>Title</LabelStyled>
                 <InputStyled
                     type="text"
                     required
-                    value={tittle}
-                    onChange={(e) => setTittle(e.target.value)}
+                    value={title}
+                    onChange={(e) => settitle(e.target.value)}
                 />
 
                 <LabelStyled>Status</LabelStyled>
@@ -72,9 +72,9 @@ export default function Popup(props) {
                 />
 
                 <ButtonStyled type="submit">Add</ButtonStyled>
-                <ButtonStyled type="button" onClick={props.handleClosePopup}>Close</ButtonStyled>
-            </form>
-        </PopupStyled>
+                <ButtonStyled type="button" onClick={props.handleCloseDialog}>Close</ButtonStyled>
+            </FormStyled>
+        </DialogStyled>
     );
 }
 

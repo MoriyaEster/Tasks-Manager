@@ -9,12 +9,13 @@ export default function Lane(props) {
 
     const { setNodeRef } = useDroppable({
         id: props.id
-    })
+    }
+)
 
     return (
         <LaneStyled ref={setNodeRef}>
             <LaneHeader>
-                <LaneTitle>{props.tittle}</LaneTitle>
+                <LaneTitle>{props.title}</LaneTitle>
             </LaneHeader>
 
             {props.tasks.map(task => {
@@ -22,12 +23,10 @@ export default function Lane(props) {
                     <Task
                         key={task.id}
                         id={task.id}
-                        tittle={task.tittle}
+                        title={task.title}
                         body={task.body}
                         time={task.time}
                         laneId={task.laneId}
-                        handleApproveTask={props.handleApproveTask}
-                        handleDeleteTask={props.handleDeleteTask}
                     />
                 )
             })}

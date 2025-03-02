@@ -1,9 +1,9 @@
-import { HeaderStyled } from "./styles/Header.styled"
+import { HeaderStyled, TitleStyled} from "./styles/Header.styled"
 
 export default function Header() {
     return (
         <HeaderStyled>
-            <h1>Project Board</h1>
+            <TitleStyled>Project Board</TitleStyled>
         </HeaderStyled>
     )
 }

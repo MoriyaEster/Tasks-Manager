@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const PopupStyled = styled.div`
+export const DialogStyled = styled.dialog`
     position: fixed;
     margin: 0 auto;
     text-align: center;
@@ -18,6 +18,12 @@ export const TitleStyled = styled.h2`
     margin-bottom: 30px;
     color: #f1356d;
 `;
+
+export const FormStyled = styled.form`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
 
 export const InputStyled = styled.input`
     width: 100%;
