@@ -5,8 +5,8 @@ import TaskDialog from "./TaskDialog"
 import Dialog from '@mui/material/Dialog';
 import { DndContext } from '@dnd-kit/core';
 import { use } from "react";
-import useDragAndDrop from "./useDragAndDrop";
-import useTask from "./useTask";
+import useDragAndDrop from "./hooks/useDragAndDrop";
+import useTask from "./hooks/useTask";
 
 const lanes = [
     {
