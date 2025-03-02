@@ -18,21 +18,24 @@ export default function useTask() {
             laneId: status
         }
 
-        const updatedTasks = [...tasks, newTask];
-        localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-        setTasks(updatedTasks);
+        setTasks((tasks) => {
+            const updatedTasks = [...tasks, newTask];
+            localStorage.setItem("tasks", JSON.stringify(updatedTasks));
 
-        console.log(localStorage.getItem("tasks"))
-
+            return updatedTasks;
+        })
     }
 
     const deleteTask = (id) => {
         const task = tasks.find((task) => task.id === id)
 
         if (task) {
-            const newTasks = tasks.filter((task) => task.id !== id)
-            localStorage.setItem("tasks", JSON.stringify(newTasks));
-            setTasks(newTasks)
+            setTasks((tasks) => {
+                const newTasks = tasks.filter((task) => task.id !== id)
+
+                localStorage.setItem("tasks", JSON.stringify(newTasks));
+                return newTasks;
+            })
         }
     }
 
@@ -40,9 +43,14 @@ export default function useTask() {
         const task = tasks.find((task) => task.id === id)
 
         if (task && task.laneId !== 4) {
-            const newTasks = tasks.filter((task) => task.id !== id)
-            localStorage.setItem("tasks", JSON.stringify(newTasks.concat({ ...task, laneId: 4 })))
-            setTasks(newTasks.concat({ ...task, laneId: 4 }))
+            setTasks((tasks) => {
+                const newTasks = tasks.map((task) =>
+                    task.id === id ? { ...task, laneId: 4 } : task
+                )
+
+                localStorage.setItem("tasks", JSON.stringify(newTasks));
+                return newTasks;
+            })
         }
     }
 
