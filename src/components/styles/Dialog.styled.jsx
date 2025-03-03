@@ -13,8 +13,6 @@ export const TitleStyled = styled.h2`
     font-size: 2em;
     display: flex;
     justify-content: center;
-
-
 `;
 
 export const FormStyled = styled.form`
