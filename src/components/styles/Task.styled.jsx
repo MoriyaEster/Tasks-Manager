@@ -3,9 +3,10 @@ import styled, { css } from 'styled-components';
 export const TaskStyled = styled.div`
     background-color: white;
     border-radius: 10px;
-    border: 2px solid gray;
+    border: 2px solid
     margin: 10px;
     padding: 10px;
+    transition: border 0.3s ease-in-out;
 `;
 
 export const TimeStyled = styled.time`

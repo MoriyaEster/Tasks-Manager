@@ -1,8 +1,6 @@
 import React, { useContext, useState } from "react";
 import { TaskStyled, TimeStyled, TitleStyled, BodyStyled, ButtonStyled } from "./styles/Task.styled";
 import { useDraggable } from "@dnd-kit/core";
-import Dialog from '@mui/material/Dialog';
-import { Container } from "@mui/material";
 import { TaskContext } from "./Board";
 import DateDialog from "./DateDialog";
 
@@ -38,9 +36,9 @@ export default function Task(props) {
         ? { transform: `translate(${transform.x}px, ${transform.y}px)` }
         : undefined
 
-    // const late = time < new Date().toISOString().split('T')[0] && props.laneId !== 4
+    // const late = (date < new Date().toISOString().split('T')[0] && props.laneId !== 4).toString()
 
-    // const done = props.laneId === 4
+    // const done = (props.laneId === 4).toString()
 
 
 
