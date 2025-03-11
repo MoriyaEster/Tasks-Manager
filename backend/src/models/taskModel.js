@@ -9,4 +9,14 @@ const getTasks = async () => {
   }
 };
 
-export { getTasks };
+const getTaskById = async (taskId) => {
+  try {
+    const result = await sql.query`SELECT * FROM tasks WHERE id = ${taskId}`;
+    return result.recordset[0];
+  } catch (err) {
+    console.error("Error fetching task:", err);
+  }
+}
+
+export { getTasks, getTaskById };
+
