@@ -1,4 +1,4 @@
-import { getTasks, getTaskById } from "../models/taskModel.js";
+import { getTasks, getTaskById, createTask,updateTask, deleteTask } from "../models/taskModel.js";
 
 const getAllTasks = async (req, res) => {
   try {
@@ -24,4 +24,52 @@ const getTask = async (req, res) => {
   }
 }
 
-export { getAllTasks, getTask }
+const addTask = async (req, res) => {
+  try {
+    const { title, body, time, lane_id } = req.body
+    const task = await createTask(title, body, time, lane_id)
+    res.status(201).json(task)
+  } catch (err) {
+    res.status(500).json({ error: "Failed to add task" })
+  }
+}
+
+const editTask = async (req, res) => {
+  const { id } = req.params
+  const updates = req.body
+
+
+  try {
+    const success = await updateTask(id, updates)
+
+    if (success) {
+      res.json({ message: "Task updated successfully" })
+    } else {
+      res.status(404).json({ error: "Task not found" })
+    }
+  } catch (err) {
+    console.error("Error patching task:", err);
+    res.status(500).json({ error: "Failed to update task" })
+  }
+}
+
+const removeTask = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const success = await deleteTask(id);
+
+    if (success) {
+      res.json({ message: "Task deleted successfully" });
+    } else {
+      res.status(404).json({ error: "Task not found" });
+    }
+  } catch (err) {
+    console.error("Error deleting task:", err);
+    res.status(500).json({ error: "Failed to delete task" });
+  }
+}
+
+
+
+export { getAllTasks, getTask, addTask, editTask, removeTask }
