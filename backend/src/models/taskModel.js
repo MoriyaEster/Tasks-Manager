@@ -46,7 +46,7 @@ const updateTask = async (id, updates) => {
 
     const result = await sql.query`
       UPDATE tasks 
-      SET title = ${title}, lane_id = ${lane_id}
+      SET title = ${title}, lane_id = ${lane_id}, body = ${body}, time = ${time}
       WHERE id = ${id}
     `;
     return result.rowsAffected[0] > 0
