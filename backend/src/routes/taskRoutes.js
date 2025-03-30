@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/tasks", getAllTasks);
 router.get("/tasks/:id", getTask);
-router.post("/", addTask)
+router.post("/", addTask) //midelware
 router.patch("/tasks/:id", editTask);
 router.delete("/tasks/:id", removeTask)
 

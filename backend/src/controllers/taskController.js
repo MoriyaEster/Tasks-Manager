@@ -1,4 +1,4 @@
-import { getTasks, getTaskById, createTask,updateTask, deleteTask } from "../models/taskModel.js";
+import { getTasks, getTaskById, createTask,updateTask, deleteTask } from "../models/taskModel.js"
 
 const getAllTasks = async (req, res) => {
   try {
