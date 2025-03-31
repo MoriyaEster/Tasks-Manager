@@ -3,10 +3,10 @@ import { getAllTasks, getTask, addTask, editTask, removeTask } from "../controll
 
 const router = express.Router();
 
-router.get("/tasks", getAllTasks);
-router.get("/tasks/:id", getTask);
+router.get("/", getAllTasks);
+router.get("/:id", getTask);
 router.post("/", addTask) //midelware
-router.patch("/tasks/:id", editTask);
-router.delete("/tasks/:id", removeTask)
+router.patch("/:id", editTask);
+router.delete("/:id", removeTask)
 
 export default router;

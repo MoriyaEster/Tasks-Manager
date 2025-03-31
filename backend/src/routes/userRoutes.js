@@ -3,9 +3,9 @@ import { getAllUsers, getUser, addUser, removeUser } from "../controllers/userCo
 
 const router = express.Router();
 
-router.get("/users", getAllUsers);
-router.get("/users/:id", getUser);
+router.get("/", getAllUsers);
+router.get("/:id", getUser);
 router.post("/", addUser) //midelware
-router.delete("/user/:id", removeUser)
+router.delete("/:id", removeUser)
 
 export default router;

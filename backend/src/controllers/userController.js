@@ -37,6 +37,7 @@ const addUser = async (req, res) => {
 const removeUser = async (req, res) => {
     try {
         const userId = req.params.id
+        console.log("Deleting user:", userId); // Debugging line
         const success = await deleteUser(userId);
 
         if (success) {

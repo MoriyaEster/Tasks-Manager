@@ -1,9 +1,10 @@
 import { sql } from "../config/db.js";
 
 const assignUserToTask = async (userId, taskId) => {
+    console.log("Assigning user to task:", userId, taskId);
     try {
         const result = await sql.query`
-              INSERT INTO UsersTasks (user_id, task_id)
+              INSERT INTO UsersTasks (userId, taskId)
               VALUES (${userId}, ${taskId})
             `;
         return result.rowsAffected[0] > 0;
@@ -15,7 +16,7 @@ const assignUserToTask = async (userId, taskId) => {
 const removeUserFromTask = async (userId, taskId) => {
     try {
         const result = await sql.query`
-            DELETE FROM UsersTasks (user_id, task_id)
+            DELETE FROM UsersTasks (userId, taskId)
               VALUES (${userId}, ${taskId})
             `;
         return result.rowsAffected[0] > 0;
@@ -27,10 +28,10 @@ const removeUserFromTask = async (userId, taskId) => {
 const getUsersForTask = async (taskId) => {
     try {
         const result = await sql.query`
-            SELECT u.id, u.name 
+            SELECT u.id, u.username 
             FROM usersTasks ut
-            JOIN users u ON ut.user_id = u.id
-            WHERE ut.task_id = ${taskId}
+            JOIN users u ON ut.userId = u.id
+            WHERE ut.taskId = ${taskId}
         `;
         return result.recordset;
     }catch(err){
@@ -43,8 +44,8 @@ const getTasksForUser = async (userId) => {
         const result = await sql.query`
             SELECT t.id, t.title, t.body, t.time, t.lane_id
             FROM usersTasks ut
-            JOIN tasks t ON ut.task_id = t.id
-            WHERE ut.user_id = ${userId}
+            JOIN tasks t ON ut.taskId = t.id
+            WHERE ut.userId = ${userId}
         `;
         return result.recordset;
     }catch(err){

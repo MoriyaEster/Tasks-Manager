@@ -3,6 +3,7 @@ import { assignUserToTask, removeUserFromTask, getUsersForTask, getTasksForUser 
 const assignUser = async (req, res) => {
     try {
         const { userId, taskId } = req.body
+        console.log("Assigning user to task:", userId, taskId);
         const success = await assignUserToTask(userId, taskId);
 
         if (success) {
@@ -34,7 +35,7 @@ const removeUser = async (req, res) => {
 
 const getAllTasksForUser = async (req, res) => {
     try {
-        const userId = req.params.id
+        const userId = req.params.userId
         const tasks = await getTasksForUser(userId)
 
         if (!tasks) {
@@ -48,7 +49,8 @@ const getAllTasksForUser = async (req, res) => {
 }
 const getAllUsersForTask = async (req, res) => {
     try {
-        const taskId = req.params.id
+        const taskId = req.params.taskId
+        console.log("Fetching users for task:", taskId); // Debugging line
         const users = await getUsersForTask(taskId)
 
         if (!users) {
