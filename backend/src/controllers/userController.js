@@ -1,4 +1,5 @@
 import { getUsers, createUser, getUserById, deleteUser } from "../models/userModel.js"
+import { validationResult } from "express-validator";
 
 const getAllUsers = async (req, res) => {
     try {
@@ -25,6 +26,11 @@ const getUser = async (req, res) => {
 }
 
 const addUser = async (req, res) => {
+    // Validate the request body
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
     try {
         const { name } = req.body
         const user = await createUser(name)

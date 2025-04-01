@@ -1,4 +1,5 @@
 import { getTasks, getTaskById, createTask,updateTask, deleteTask } from "../models/taskModel.js"
+import { validationResult } from "express-validator";
 
 const getAllTasks = async (req, res) => {
   try {
@@ -25,6 +26,12 @@ const getTask = async (req, res) => {
 }
 
 const addTask = async (req, res) => {
+  // Validate the request body
+  const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    
   try {
     const { title, body, time, lane_id } = req.body
     const task = await createTask(title, body, time, lane_id)

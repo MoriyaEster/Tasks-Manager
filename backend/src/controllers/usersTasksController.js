@@ -1,6 +1,12 @@
 import { assignUserToTask, removeUserFromTask, getUsersForTask, getTasksForUser } from "../models/usersTasksModel.js";
+import { validationResult } from "express-validator";
 
 const assignUser = async (req, res) => {
+    // Validate the request body
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
     try {
         const { userId, taskId } = req.body
         console.log("Assigning user to task:", userId, taskId);
