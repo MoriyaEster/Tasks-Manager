@@ -46,6 +46,7 @@ export default function Task(props) {
         <TaskStyled ref={setNodeRef} {...attributes} style={style}>
             <div {...listeners}>
                 <TitleStyled>{props.title}</TitleStyled>
+                <h3>{props.id}</h3>
                 <BodyStyled>{props.body}</BodyStyled>
             </div>
 

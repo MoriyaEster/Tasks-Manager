@@ -2,28 +2,33 @@ import { useState } from "react";
 
 export default function useTask() {
 
-    const [tasks, setTasks] = useState(() => {
-        return JSON.parse(localStorage.getItem("tasks")) || []
-    })
-
-    const [counterId, setCounterId] = useState((JSON.parse(localStorage.getItem("tasks")) || []).length)
-
+    const getNextTaskId = () => {
+        const storedTasks = JSON.parse(localStorage.getItem("tasks")) || []
+        const maxId = storedTasks.length > 0 ? Math.max(...storedTasks.map(task => task.id)) : 0
+        return maxId + 1
+    }
+    
+    const [tasks, setTasks] = useState(() => JSON.parse(localStorage.getItem("tasks")) || [])
+    const [counterId, setCounterId] = useState(() => getNextTaskId())
+    
     const addTask = (title, status, body, date) => {
-        setCounterId((prev) => prev + 1)
+        const newId = getNextTaskId()
+    
         const newTask = {
-            id: counterId,
-            title: title,
-            body: body,
+            id: newId,
+            title,
+            body,
             time: date,
             laneId: status
-        }
-
-        setTasks((tasks) => {
-            const updatedTasks = [...tasks, newTask];
-            localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-
+        };
+    
+        setTasks((prevTasks) => {
+            const updatedTasks = [...prevTasks, newTask]
+            localStorage.setItem("tasks", JSON.stringify(updatedTasks))
             return updatedTasks;
-        })
+        });
+    
+        setCounterId(newId + 1)
     }
 
     const deleteTask = (id) => {

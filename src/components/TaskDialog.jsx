@@ -8,18 +8,23 @@ export default function TaskDialog(props) {
     const [body, setBody] = useState('');
     const [date, setDate] = useState('');
 
-    function handleStatus(statusValue) {
-        if (statusValue === 'TODO') {
-            setStatus(1);
-        }
-        if (statusValue === 'in progress') {
-            setStatus(2);
-        }
-        if (statusValue === 'Review') {
-            setStatus(3);
-        }
-        if (statusValue === 'done') {
-            setStatus(4);
+    function handleStatus(e) {
+        const statusValue = e.target.value;
+        switch (statusValue) {
+            case 'TODO':
+                setStatus(1);
+                break;
+            case 'in progress':
+                setStatus(2);
+                break;
+            case 'Review':
+                setStatus(3);
+                break;
+            case 'done':
+                setStatus(4);
+                break;
+            default:
+                setStatus(1);
         }
     }
 
@@ -46,11 +51,12 @@ export default function TaskDialog(props) {
                 />
 
                 <LabelStyled>Status</LabelStyled>
-                <SelectStyled
-                    name='status'
-                    value={status}
-                    onChange={(e) => handleStatus(e.target.value)}
-                >
+                <SelectStyled name='status' value={
+                    status === 1 ? 'TODO' :
+                    status === 2 ? 'in progress' :
+                    status === 3 ? 'Review' :
+                    'done'
+                } onChange={handleStatus}>
                     <option value="TODO">TODO</option>
                     <option value="in progress">In Progress</option>
                     <option value="Review">Review</option>
