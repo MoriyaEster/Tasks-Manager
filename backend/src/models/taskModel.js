@@ -1,112 +1,57 @@
-import { sql } from "../config/db.js";
+import db from "../config/db.js";
 
+
+// Get all tasks
 const getTasks = async () => {
   try {
-    const result = await sql.query`SELECT * FROM Tasks`;
-    return result.recordset;
+    const tasks = await db("Tasks").select("*")
+    return tasks
   } catch (err) {
-    console.error("Error fetching Tasks:", err);
+    console.error("Error fetching tasks:", err); throw err
   }
-};
+}
 
+// Get task by ID
 const getTaskById = async (taskId) => {
   try {
-    const result = await sql.query`SELECT * FROM Tasks WHERE id = ${taskId}`;
-    return result.recordset[0];
+    const task = await db("Tasks").where({ id: taskId }).first()
+    return task
   } catch (err) {
     console.error("Error fetching task:", err);
   }
 }
 
+// Create a new task
 const createTask = async (title, body, time, lane_id) => {
   try {
-    const result = await sql.query`
-      INSERT INTO Tasks (title, body, time, lane_id)
-      OUTPUT INSERTED.*
-      VALUES (${title}, ${body}, ${time}, ${lane_id})
-    `;
-    return result.recordset[0]
+    const [newTask] = await db("Tasks")
+      .insert({ title, body, time, lane_id })
+      .returning("")
+    return newTask
   } catch (err) {
     console.error("Error creating task:", err)
   }
 }
 
+// Update a task
 const updateTask = async (id, updates) => {
-
   try {
-    const taskResult = await sql.query`SELECT * FROM Tasks WHERE id = ${id}`;
-    const task = taskResult.recordset[0]
+    const result = await db('Tasks')
+      .where({ id })
+      .update(updates);
 
-    if (!task) {
-      console.log("Task not found");
-      return false;
-    }
-
-    let updatequery = ``
-    for (const key in updates) {
-      if (UPDATE_FIELDS[key]) {
-        updatequery += `${UPDATE_FIELDS[key]} = ${updates[key]}, `
-      }
-    }
-    updatequery = updatequery.slice(0, -2)
-
-    const { title = task.title, body = task.body, time = task.time, lane_id = task.lane_id } = updates
-
-    console.log(`
-      UPDATE Tasks 
-      SET ${updatequery}
-      WHERE id = ${id}
-    `)
-
-    console.log(typeof(updatequery))
-    console.log(typeof(`UPDATE Tasks SET title =`))
-    console.log(typeof(`UPDATE Tasks SET title = ${title}`))
-    console.log(typeof(title))
-
-    // console.log(
-    // `UPDATE Tasks 
-    //   SET title = ${title}, body = ${body}, time = ${time}, lane_id = ${lane_id}
-    //   WHERE id = ${id}`
-    // )
-
-
-
-    const long = `
-      title = ${title}, body = ${body}, time = ${time}, lane_id = ${lane_id}
-      WHERE id = ${id}
-    `
-
-    const short = `
-      ${updatequery}
-      WHERE id = ${id}
-    `
-
-    console.log(long === short)
-
-    const result = await sql.query`
-    UPDATE Tasks 
-    SET ${updatequery}
-    WHERE id = ${id}
-  `;
-
-    // const result = await sql.query`
-    //   UPDATE Tasks 
-    //   SET ${updatequery}
-    //   WHERE id = ${id}
-    // `;
-
-    return result.rowsAffected[0] > 0
-
+    return result > 0;
   } catch (err) {
-    console.error("Error patching task:", err)
-    throw err
+    console.error("Error updating task:", err);
+    throw err;
   }
 }
 
+// Delete a task
 const deleteTask = async (taskId) => {
   try {
-    const result = await sql.query`DELETE FROM Tasks WHERE id = ${taskId}`;
-    return result.rowsAffected[0] > 0
+    const rowsAffected = await db("Tasks").where({ id: taskId }).del()
+    return rowsAffected > 0
   } catch (err) {
     console.error("Error deleting task:", err);
   }
@@ -115,11 +60,3 @@ const deleteTask = async (taskId) => {
 
 export { getTasks, getTaskById, createTask, updateTask, deleteTask };
 
-const UPDATE_FIELDS = {
-  title: `title`,
-  body: `body`,
-  time: `time`,
-  lane_id: `lane_id`
-}
-
-//להשתמש בכל ה server 

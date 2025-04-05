@@ -1,21 +1,20 @@
-import { sql } from "../config/db.js";
+import db from "../config/db.js";
 
 const getUsers = async () => {
     try {
-      const result = await sql.query`SELECT * FROM Users`;
-      return result.recordset;
+        const Users = await db("Users").select("*")
+        return Users
     } catch (err) {
-      console.error("Error fetching Users:", err);
+        console.error("Error fetching Users:", err);
     }
-  }
+}
 
 const createUser = async (username) => {
     try {
-        const result = await sql.query`
-            INSERT INTO Users (username)
-            VALUES (${username})
-        `;
-        return result.recordset[0]
+        const [newUser] = await db("Users")
+            .insert(username)
+            .returning("")
+        return newUser
     }
     catch (err) {
         console.error("Error creating user:", err)
@@ -24,23 +23,19 @@ const createUser = async (username) => {
 
 const getUserById = async (userId) => {
     try {
-        const result = await sql.query`
-            SELECT * FROM Users WHERE id = ${userId}
-        `;
-        return result.recordset[0];
+        const user = await db("Users").where({ id: userId }).first()
+        return user
     } catch (err) {
         console.error("Error fetching user:", err);
     }
 }
 
-const deleteUser = async (userId ) => {
-    try{
-        const result = await sql.query`
-            DELETE FROM Users WHERE id = ${userId}
-        `;
-        return result.recordset[0];
+const deleteUser = async (userId) => {
+    try {
+        const rowsAffected = await db("Users").where({ id: userId }).del()
+        return rowsAffected > 0
     }
-    catch(err){
+    catch (err) {
         console.error("Error deleting user:", err);
     }
 }
