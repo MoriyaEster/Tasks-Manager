@@ -11,8 +11,11 @@ const getUsers = async () => {
 
 const createUser = async (username) => {
     try {
+        const data = {
+            [USER_FIELDS.username]: username
+        }
         const [newUser] = await db("Users")
-            .insert(username)
+            .insert(data)
             .returning("")
         return newUser
     }
@@ -41,3 +44,8 @@ const deleteUser = async (userId) => {
 }
 
 export { getUsers, createUser, getUserById, deleteUser }
+
+const USER_FIELDS = {
+    id: "id",
+    username: "username"
+}

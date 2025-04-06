@@ -24,8 +24,14 @@ const getTaskById = async (taskId) => {
 // Create a new task
 const createTask = async (title, body, time, lane_id) => {
   try {
+    const data = {
+      [TASK_FIELDS.title]: title,
+      [TASK_FIELDS.body]: body,
+      [TASK_FIELDS.time]: time,
+      [TASK_FIELDS.lane_id]: lane_id,
+    }
     const [newTask] = await db("Tasks")
-      .insert({ title, body, time, lane_id })
+      .insert(data)
       .returning("")
     return newTask
   } catch (err) {
@@ -60,3 +66,10 @@ const deleteTask = async (taskId) => {
 
 export { getTasks, getTaskById, createTask, updateTask, deleteTask };
 
+// Constants for task fields
+const TASK_FIELDS = {
+  title: `title`,
+  body: `body`,
+  time: `time`,
+  lane_id: `lane_id`
+}
