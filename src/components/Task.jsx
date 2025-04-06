@@ -3,6 +3,8 @@ import { TaskStyled, TimeStyled, TitleStyled, BodyStyled, ButtonStyled } from ".
 import { useDraggable } from "@dnd-kit/core";
 import { TaskContext } from "./Board";
 import DateDialog from "./DateDialog";
+import axios from "axios";
+import { url_tasks } from "../axios-handler";
 
 
 export default function Task(props) {
@@ -12,16 +14,19 @@ export default function Task(props) {
     const [date, setDate] = useState(props.time);
     const [updateDate, setUpdateDate] = useState(false);
 
-    const handleDateChange = (date) => {
-        
-        const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-        const updatedTasks = storedTasks.map(task =>
-            task.id === props.id ? { ...task, time: date } : task)
-
-        localStorage.setItem("tasks", JSON.stringify(updatedTasks))
-        setDate(date)
-
-    };
+    const handleDateChange = async (newDate) => {
+        try {
+            await axios.patch(`${ url_tasks }${ props.id }`,
+                { time: newDate });
+            setDate(newDate);
+            // Optionally update the task in Board's task list:
+            if (props.updateTaskInState) {
+                props.updateTaskInState(props.id, { time: newDate });
+            }
+        } catch (err) {
+            console.error("Error updating task time:", err);
+        }
+    }
 
     const handleClose = () => {
         setUpdateDate(false);
@@ -57,7 +62,7 @@ export default function Task(props) {
 
             {updateDate
                 && <DateDialog open={updateDate} handleDateChange={handleDateChange} handleClose={handleClose} />}
-            <TimeStyled>{date}</TimeStyled>
+            <TimeStyled>{date?.split('T')[0]}</TimeStyled>
         </TaskStyled>
     )
 }

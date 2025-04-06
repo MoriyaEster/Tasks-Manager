@@ -1,25 +1,30 @@
 import React, { useCallback } from "react"
+import axios from "axios"
+import { url_tasks } from "../../axios-handler";
 
 export default function useDragAndDrop(tasks, setTasks) {
 
-    const handleOnDragEnd = useCallback((event) => {
-        const { active, over } = event
+    const handleOnDragEnd = useCallback(async (event) => {
+        const { active, over } = event;
 
-        if (!over) return
+        if (!over) return;
 
-        const taskId = active.id
-        const laneId = over.id
+        const taskId = active.id;
+        const laneId = over.id;
 
-        setTasks((tasks) => {
-            const updatedTasks = tasks.map((task) =>
+        setTasks((prevTasks) => {
+            const updatedTasks = prevTasks.map((task) =>
                 task.id === taskId ? { ...task, laneId: laneId } : task
-            )
-            
-            localStorage.setItem("tasks", JSON.stringify(updatedTasks))
-
+            );
             return updatedTasks;
         });
-    }, [setTasks])
+
+        try {
+            await axios.patch(`${url_tasks}${taskId}`, {lane_id: laneId})
+        } catch (err) {
+            console.error("Failed to update task on backend:", err);
+        }
+    }, [setTasks]);
 
     return { handleOnDragEnd }
 }

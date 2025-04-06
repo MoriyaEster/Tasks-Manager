@@ -6,6 +6,8 @@ import { DndContext } from '@dnd-kit/core';
 import { use } from "react";
 import useDragAndDrop from "./hooks/useDragAndDrop";
 import useTask from "./hooks/useTask";
+import axios from "axios";
+import { url_tasks } from "../axios-handler";
 
 const lanes = [
     {
@@ -37,9 +39,17 @@ export default function Board() {
     const [isDialogVisible, setIsDialogVisible] = useState(false)
 
     useEffect(() => {
-        const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        setTasks(storedTasks);
-    }, []);
+        const fetchTasks = async () => {
+            try {
+                const response = await axios.get(url_tasks)
+                setTasks(response.data)
+            } catch (error) {
+                console.error("Failed to fetch tasks from backend:", error)
+            }
+        };
+    
+        fetchTasks();
+    }, [tasks])
 
     function handleOpenDialog() {
         setIsDialogVisible(true)
@@ -59,7 +69,7 @@ export default function Board() {
                                 key={lane.id}
                                 id={lane.id}
                                 title={lane.title}
-                                tasks={tasks.filter(task => task.laneId === lane.id)}
+                                tasks={tasks.filter(task => task.lane_id === lane.id)}
                             />);
                     })}
                 </DndContext>

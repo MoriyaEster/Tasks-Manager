@@ -2,15 +2,11 @@ import { LaneStyled, LaneHeader, LaneTitle } from "./styles/Lane.styled";
 import Task from "./Task";
 import { useDroppable } from "@dnd-kit/core";
 
-
-
-
 export default function Lane(props) {
 
     const { setNodeRef } = useDroppable({
         id: props.id
-    }
-)
+    })
 
     return (
         <LaneStyled ref={setNodeRef}>
@@ -19,6 +15,7 @@ export default function Lane(props) {
             </LaneHeader>
 
             {props.tasks.map(task => {
+
                 return (
                     <Task
                         key={task.id}
