@@ -1,14 +1,19 @@
 import './App.css'
-import Header from './components/Header'
-import Board from './components/Board'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Home from './pages/Home'
+import Login from './pages/Login'
+
 
 function App() {
 
   return (
     <div className='App'>
-      <Header />
-      <Board />
-
+      <Router basename="/Trello">
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/home" element={<Home />} />
+        </Routes>
+      </Router>
     </div>
   )
 }
