@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 import axios from "axios"
-import { url_tasks } from "../../axios-handler";
+import { url_tasks } from "../axios-handler";
 
 export default function useDragAndDrop(tasks, setTasks) {
 

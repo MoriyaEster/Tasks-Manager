@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
-import { LabelStyled, TitleStyled, FormStyled, InputStyled, TextareaStyled, SelectStyled, ButtonStyled } from './styles/Dialog.styled';
+import { LabelStyled, TitleStyled, FormStyled, InputStyled, TextareaStyled, SelectStyled, ButtonStyled } from '../styles/Dialog.styled';
 
 export default function TaskDialog(props) {
     const [title, settitle] = useState('');

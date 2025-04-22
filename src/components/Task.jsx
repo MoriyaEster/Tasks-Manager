@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { TaskStyled, TimeStyled, TitleStyled, BodyStyled, ButtonStyled } from "./styles/Task.styled";
+import { TaskStyled, TimeStyled, TitleStyled, BodyStyled, ButtonStyled } from "../styles/Task.styled";
 import { useDraggable } from "@dnd-kit/core";
 import { TaskContext } from "./Board";
 import DateDialog from "./DateDialog";

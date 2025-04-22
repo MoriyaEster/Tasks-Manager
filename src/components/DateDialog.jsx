@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Dialog from "@mui/material/Dialog";
-import { FormStyled, TitleStyled, InputStyled, ButtonStyled } from './styles/Dialog.styled';
+import { FormStyled, TitleStyled, InputStyled, ButtonStyled } from '../styles/Dialog.styled';
 
 export default function DateDialog(props) {
 

@@ -1,4 +1,4 @@
-import { LaneStyled, LaneHeader, LaneTitle } from "./styles/Lane.styled";
+import { LaneStyled, LaneHeader, LaneTitle } from "../styles/Lane.styled";
 import Task from "./Task";
 import { useDroppable } from "@dnd-kit/core";
 

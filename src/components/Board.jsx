@@ -1,13 +1,13 @@
 import React, { useState, createContext, useEffect } from "react"
-import { BoardStyled, ButtonAddTask } from "./styles/Board.styled"
+import { BoardStyled, ButtonAddTask } from "../styles/Board.styled"
 import Lane from "./Lane"
 import TaskDialog from "./TaskDialog"
 import { DndContext } from '@dnd-kit/core';
-import { use } from "react";
-import useDragAndDrop from "./hooks/useDragAndDrop";
-import useTask from "./hooks/useTask";
+import useDragAndDrop from "../hooks/useDragAndDrop";
+import useTask from "../hooks/useTask";
 import axios from "axios";
 import { url_tasks } from "../axios-handler";
+import { useLogin } from "../LoginContext";
 
 const lanes = [
     {
@@ -35,6 +35,7 @@ export default function Board() {
     
     const { tasks, setTasks, addTask, deleteTask, approveTask } = useTask()
     const { handleOnDragEnd } = useDragAndDrop(tasks, setTasks)
+    const { userName } = useLogin('')
 
     const [isDialogVisible, setIsDialogVisible] = useState(false)
 
@@ -42,6 +43,9 @@ export default function Board() {
         const fetchTasks = async () => {
             try {
                 const response = await axios.get(url_tasks)
+                // Filter tasks by user
+                const filteredTasks = response.data.filter(task => task.user === userName)
+                // Set the filtered tasks to state
                 setTasks(response.data)
             } catch (error) {
                 console.error("Failed to fetch tasks from backend:", error)
