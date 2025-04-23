@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { url_tasks } from "../axios-handler";
+import { url_tasks, url_get_tasks_for_user_by_name, url_assign_task_to_user } from "../axios-handler";
+import { useLogin } from "../LoginContext";
+
 
 export default function useTask() {
 
     const [tasks, setTasks] = useState([])
+    const { userName } = useLogin()
 
     // Fetch tasks from backend
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const response = await axios.get(url_tasks)
+                const response = await axios.get(url_get_tasks_for_user_by_name + userName)
                 setTasks(response.data)
             } catch (err) {
                 console.error("Error fetching tasks:", err)

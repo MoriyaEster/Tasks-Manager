@@ -29,11 +29,11 @@ const addUser = async (req, res) => {
     // Validate the request body
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(404).json({ errors: errors.array() });
     }
     try {
-        const { name } = req.body
-        const user = await createUser(name)
+        const { username } = req.body
+        const user = await createUser(username)
         res.status(201).json(user)
     } catch (err) {
         res.status(500).json({ error: "Failed to add task" })

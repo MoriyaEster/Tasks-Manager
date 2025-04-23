@@ -6,7 +6,7 @@ import { DndContext } from '@dnd-kit/core';
 import useDragAndDrop from "../hooks/useDragAndDrop";
 import useTask from "../hooks/useTask";
 import axios from "axios";
-import { url_tasks } from "../axios-handler";
+import { url_tasks, url_get_tasks_for_user_by_name } from "../axios-handler";
 import { useLogin } from "../LoginContext";
 
 const lanes = [
@@ -34,7 +34,7 @@ export const TaskContext = createContext();
 export default function Board() {
     
     const { tasks, setTasks, addTask, deleteTask, approveTask } = useTask()
-    const { handleOnDragEnd } = useDragAndDrop(tasks, setTasks)
+    const { handleOnDragEnd } = useDragAndDrop(setTasks)
     const { userName } = useLogin('')
 
     const [isDialogVisible, setIsDialogVisible] = useState(false)
@@ -42,7 +42,7 @@ export default function Board() {
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const response = await axios.get(url_tasks)
+                const response = await axios.get(`${url_get_tasks_for_user_by_name}?userName=${userName}`)
                 // Filter tasks by user
                 const filteredTasks = response.data.filter(task => task.user === userName)
                 // Set the filtered tasks to state

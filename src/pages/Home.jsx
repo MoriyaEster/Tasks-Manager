@@ -6,7 +6,6 @@ import { useLogin } from "../LoginContext";
 export default function Home() {
     
     const {userName} = useLogin('');
-    console.log(userName)
 
     return (
         <div className="home">

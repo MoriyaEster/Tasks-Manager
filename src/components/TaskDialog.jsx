@@ -3,6 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import { LabelStyled, TitleStyled, FormStyled, InputStyled, TextareaStyled, SelectStyled, ButtonStyled } from '../styles/Dialog.styled';
 
 export default function TaskDialog(props) {
+
     const [title, settitle] = useState('');
     const [status, setStatus] = useState(1);
     const [body, setBody] = useState('');

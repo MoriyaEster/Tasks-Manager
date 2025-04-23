@@ -1,11 +1,20 @@
-import { HeaderStyled, TitleStyled} from "../styles/Header.styled"
+import { ExitButtonStyled, HeaderStyled, TitleHeaderStyled} from "../styles/Header.styled"
 import { useLogin } from "../LoginContext";
+import { useNavigate } from 'react-router-dom';
+
 
 export default function Header() {
-    const {userName} = useLogin('');
+    const {userName} = useLogin('')
+    const navigate = useNavigate()
+
+    function handleLogOut(){
+        navigate('/login')
+    }
+
     return (
         <HeaderStyled>
-            <TitleStyled>{userName}'s Board</TitleStyled>
+            <TitleHeaderStyled>{userName}'s Board</TitleHeaderStyled>
+            <ExitButtonStyled typr="button" onClick={handleLogOut}>X</ExitButtonStyled>
         </HeaderStyled>
     )
 }

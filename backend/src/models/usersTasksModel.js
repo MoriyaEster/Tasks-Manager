@@ -1,8 +1,14 @@
 import db from "../config/db.js";
 
-const assignUserToTask = async (userId, taskId) => {
+const assignUserToTask = async (user_id, task_id) => {
     try {
-        db("UsersTasks").insert({ userId, taskId })
+        const data = {
+            userId: user_id,
+            taskId: task_id
+        }
+        const [newConnection] = await db("UsersTasks")
+            .insert(data)
+            .returning("")
         return true
     } catch (err) {
         console.error("Error assigning user to task:", err);
@@ -44,4 +50,26 @@ const getTasksForUser = async (userId) => {
     }
 }
 
-export { assignUserToTask, removeUserFromTask, getUsersForTask, getTasksForUser }
+const getTasksForUserByName = async (username) => {
+    try {
+        const tasks = await db("UsersTasks as ut")
+            .join("Users as u", "ut.userId", "u.id")
+            .join("Tasks as t", "ut.taskId", "t.id")
+            .where("u.username", username)
+            .select("t.id", "t.title", "t.body", "t.time", "t.lane_id")
+        return tasks
+    } catch (err) {
+        console.error("Error fetching tasks for user:", err)
+    }
+}
+
+const getAllConnections = async () => {
+    try {
+        const connections = await db("UsersTasks").select("*")
+        return connections
+    } catch (err) {
+        console.error("Error fetching connections:", err); throw err
+    }
+}
+
+export { assignUserToTask, removeUserFromTask, getUsersForTask, getTasksForUser, getTasksForUserByName, getAllConnections }

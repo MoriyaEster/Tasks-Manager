@@ -18,8 +18,8 @@ export const createTaskValidator = [
 ]
 
 export const createUserValidator = [
-    body('username')
-        .not().isEmpty().withMessage('Username is required')
+    body('userId')
+        .not().isEmpty().withMessage('userId is required')
 ]
 
 export const createUserTaskValidator = [

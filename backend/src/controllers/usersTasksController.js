@@ -1,4 +1,4 @@
-import { assignUserToTask, removeUserFromTask, getUsersForTask, getTasksForUser } from "../models/usersTasksModel.js";
+import { assignUserToTask, removeUserFromTask, getUsersForTask, getTasksForUser, getTasksForUserByName, getAllConnections } from "../models/usersTasksModel.js";
 import { validationResult } from "express-validator";
 
 const assignUser = async (req, res) => {
@@ -9,9 +9,7 @@ const assignUser = async (req, res) => {
     }
     try {
         const { userId, taskId } = req.body
-        console.log("Assigning user to task:", userId, taskId);
         const success = await assignUserToTask(userId, taskId);
-
         if (success) {
             res.json({ message: "User assigned to task successfully" });
         } else {
@@ -24,7 +22,7 @@ const assignUser = async (req, res) => {
 }
 
 const removeUser = async (req, res) => {
-    try{
+    try {
         const { userId, taskId } = req.body
         const success = await removeUserFromTask(userId, taskId);
 
@@ -69,4 +67,34 @@ const getAllUsersForTask = async (req, res) => {
     }
 }
 
-export { assignUser, removeUser, getAllTasksForUser, getAllUsersForTask }
+const getAllTasksForUserByName = async (req, res) => {
+    try {
+        const username = req.params.username
+        const tasks = await getTasksForUserByName(username)
+
+        if (!tasks) {
+            return res.status(404).json({ error: "Tasks not found" })
+        }
+
+        res.json(tasks)
+    } catch (err) {
+        res.status(500).json({ error: "Failed to fetch tasks for user" })
+    }
+}
+
+const getAllTaskToUser = async (req, res) => {
+    try {
+        const connections = await getAllConnections()
+
+        if (!connections) {
+            return res.status(404).json({ error: "Connections not found" })
+        }
+        res.json(connections)
+    } catch (err) {
+        res.status(500).json ({ error: "Failed to fetch connections" })
+    }
+    
+    
+}
+
+export { assignUser, removeUser, getAllTasksForUser, getAllUsersForTask, getAllTasksForUserByName, getAllTaskToUser }

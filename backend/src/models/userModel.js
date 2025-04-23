@@ -17,7 +17,7 @@ const createUser = async (username) => {
         const [newUser] = await db("Users")
             .insert(data)
             .returning("")
-        return newUser
+        return true
     }
     catch (err) {
         console.error("Error creating user:", err)
