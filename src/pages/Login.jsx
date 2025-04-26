@@ -4,7 +4,7 @@ import { HeaderStyled, TitleHeaderStyled } from '../styles/Header.styled';
 import { useLogin } from '../LoginContext';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { url_tasks } from "../axios-handler";
+import { url_users, url_get_user_by_name } from "../axios-handler";
 
 
 export default function Login() {
@@ -13,15 +13,26 @@ export default function Login() {
     const [userPassword, setUserPassword] = useState('');
     const navigate = useNavigate();
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
 
         if (userName.trim() === "" || userPassword.trim() === "") {
             alert("Please fill in both fields.")
             return;
         }
-
-        navigate('/home')
+        try {
+            const user = await axios.get(url_get_user_by_name + userName)
+            const checkThePasswordCorrect = user.data.password
+            if (checkThePasswordCorrect === userPassword) {
+                setUserPassword('')
+                navigate('/home')
+                console.log(userPassword)
+            } else {
+                alert("Worng Password.")
+            }
+        } catch (err) {
+            console.error("Error checking password:", err)
+        }
     }
 
     return (
@@ -49,7 +60,7 @@ export default function Login() {
                     />
 
                     <ButtonStyled type="submit">Log in</ButtonStyled>
-                    <ButtonStyled type="button" onClick={() => {navigate('/signup')}}>sign up</ButtonStyled>
+                    <ButtonStyled type="button" onClick={() => { navigate('/signup') }}>sign up</ButtonStyled>
                 </FormStyled>
             </LoginStyled>
         </div>

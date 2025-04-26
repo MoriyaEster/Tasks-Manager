@@ -2,6 +2,7 @@ import { LoginStyled, LabelStyled, TitleStyled, FormStyled, InputStyled, ButtonS
 import { HeaderStyled, TitleHeaderStyled } from '../styles/Header.styled';
 import { useLogin } from '../LoginContext';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import axios from "axios";
 import { url_users } from "../axios-handler";
 
@@ -9,6 +10,7 @@ import { url_users } from "../axios-handler";
 export default function Signup() {
 
     const { userName, setUserName } = useLogin('');
+    const [userPassword, setUserPassword] = useState('');
     const navigate = useNavigate();
 
     async function handleSubmit(e) {
@@ -18,6 +20,7 @@ export default function Signup() {
             alert("Please fill in both fields.")
             return;
         }
+
         // Check if the user already exists
         try {
             const responseAllUssers = await axios.get(url_users)
@@ -26,7 +29,7 @@ export default function Signup() {
                 alert("User already exists. Please choose a different name.");
             } else {
                 try {
-                    await axios.post(url_users, { username: userName });
+                    await axios.post(url_users, { username: userName, password: userPassword });
                     alert("User created successfully.");
                     navigate('/home');
                 } catch (err) {
@@ -36,6 +39,7 @@ export default function Signup() {
         } catch (err) {
             console.error("Error checking user:", err);
         }
+
     }
 
     return (
@@ -52,6 +56,14 @@ export default function Signup() {
                         required
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
+                    />
+
+                    <LabelStyled>Password:</LabelStyled>
+                    <InputStyled
+                        type="password"
+                        required
+                        value={userPassword}
+                        onChange={(e) => setUserPassword(e.target.value)}
                     />
 
                     <ButtonStyled type="submit">sign up</ButtonStyled>

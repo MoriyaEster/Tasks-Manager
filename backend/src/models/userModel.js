@@ -9,15 +9,16 @@ const getUsers = async () => {
     }
 }
 
-const createUser = async (username) => {
+const createUser = async (username, password) => {
     try {
         const data = {
-            [USER_FIELDS.username]: username
+            [USER_FIELDS.username]: username,
+            [USER_FIELDS.password]: password
         }
         const [newUser] = await db("Users")
             .insert(data)
             .returning("")
-        return true
+        return data
     }
     catch (err) {
         console.error("Error creating user:", err)
@@ -27,6 +28,15 @@ const createUser = async (username) => {
 const getUserById = async (userId) => {
     try {
         const user = await db("Users").where({ id: userId }).first()
+        return user
+    } catch (err) {
+        console.error("Error fetching user:", err);
+    }
+}
+
+const getUserByName = async (userName) => {
+    try {
+        const user = await db("Users").where({ username: userName }).first()
         return user
     } catch (err) {
         console.error("Error fetching user:", err);
@@ -43,9 +53,9 @@ const deleteUser = async (userId) => {
     }
 }
 
-export { getUsers, createUser, getUserById, deleteUser }
+export { getUsers, createUser, getUserById, getUserByName, deleteUser }
 
 const USER_FIELDS = {
-    id: "id",
-    username: "username"
+    username: "username",
+    password: "password"
 }

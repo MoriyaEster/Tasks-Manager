@@ -1,4 +1,4 @@
-import { getUsers, createUser, getUserById, deleteUser } from "../models/userModel.js"
+import { getUsers, createUser, getUserById, getUserByName, deleteUser } from "../models/userModel.js"
 import { validationResult } from "express-validator";
 
 const getAllUsers = async (req, res) => {
@@ -10,7 +10,7 @@ const getAllUsers = async (req, res) => {
     }
 }
 
-const getUser = async (req, res) => {
+const getUserWithId = async (req, res) => {
     try {
         const userId = req.params.id
         const user = await getUserById(userId)
@@ -25,6 +25,20 @@ const getUser = async (req, res) => {
     }
 }
 
+const geyUserWithName = async (req, res) => {
+    try {
+        const userName = req.params.username
+        const user = await getUserByName(userName)
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" })
+        }
+        res.json(user)
+    } catch (err) {
+        res.status(500).json({ error: "Failed to fetch user" })
+    }
+}
+
 const addUser = async (req, res) => {
     // Validate the request body
     const errors = validationResult(req);
@@ -32,8 +46,8 @@ const addUser = async (req, res) => {
         return res.status(404).json({ errors: errors.array() });
     }
     try {
-        const { username } = req.body
-        const user = await createUser(username)
+        const { username, password } = req.body
+        const user = await createUser(username, password)
         res.status(201).json(user)
     } catch (err) {
         res.status(500).json({ error: "Failed to add task" })
@@ -57,4 +71,4 @@ const removeUser = async (req, res) => {
     }
 }
 
-export { getAllUsers, getUser, addUser, removeUser }
+export { getAllUsers, getUserWithId, geyUserWithName as getUser, addUser, removeUser }

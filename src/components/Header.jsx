@@ -14,7 +14,7 @@ export default function Header() {
     return (
         <HeaderStyled>
             <TitleHeaderStyled>{userName}'s Board</TitleHeaderStyled>
-            <ExitButtonStyled typr="button" onClick={handleLogOut}>X</ExitButtonStyled>
+            <ExitButtonStyled type="button" onClick={handleLogOut}>X</ExitButtonStyled>
         </HeaderStyled>
     )
 }
