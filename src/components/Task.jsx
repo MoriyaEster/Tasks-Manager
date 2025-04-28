@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { TaskStyled, TimeStyled, TitleStyled, BodyStyled, ButtonStyled } from "../styles/Task.styled";
 import { useDraggable } from "@dnd-kit/core";
-import { TaskContext } from "./Board";
+import { TaskContext } from "../context/TaskContext";
 import DateDialog from "./DateDialog";
 import axios from "axios";
 import { url_tasks } from "../axios-handler";

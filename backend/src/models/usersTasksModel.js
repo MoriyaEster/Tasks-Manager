@@ -1,24 +1,24 @@
 import db from "../config/db.js";
 
-const assignUserToTask = async (user_id, task_id) => {
+const assignUserToTask = async (user_name, task_id) => {
     try {
         const data = {
-            userId: user_id,
+            username: user_name,
             taskId: task_id
         }
-        const [newConnection] = await db("UsersTasks")
+        const newConnection = await db("UsersTasks")
             .insert(data)
-            .returning("")
-        return true
+            .returning("*")
+        return newConnection[0]
     } catch (err) {
         console.error("Error assigning user to task:", err);
     }
 }
 
-const removeUserFromTask = async (userId, taskId) => {
+const removeUserFromTask = async (userName, taskId) => {
     try {
         const rowsAffected = await db("UsersTasks")
-            .where({ userId, taskId })
+            .where({ userName, taskId })
             .del()
         return rowsAffected > 0
     } catch (err) {
@@ -38,11 +38,11 @@ const getUsersForTask = async (taskId) => {
     }
 }
 
-const getTasksForUser = async (userId) => {
+const getTasksForUser = async (userNmae) => {
     try {
         const tasks = await db("UsersTasks as ut")
             .join("Tasks as t", "ut.taskId", "t.id")
-            .where("ut.userId", userId)
+            .where("ut.username", userNmae)
             .select("t.id", "t.title", "t.body", "t.time", "t.lane_id")
         return tasks
     } catch (err) {
@@ -53,7 +53,7 @@ const getTasksForUser = async (userId) => {
 const getTasksForUserByName = async (username) => {
     try {
         const tasks = await db("UsersTasks as ut")
-            .join("Users as u", "ut.userId", "u.id")
+            .join("Users as u", "ut.username", "u.name")
             .join("Tasks as t", "ut.taskId", "t.id")
             .where("u.username", username)
             .select("t.id", "t.title", "t.body", "t.time", "t.lane_id")

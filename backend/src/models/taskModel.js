@@ -32,8 +32,8 @@ const createTask = async (title, body, time, lane_id) => {
     }
     const newTask = await db("Tasks")
       .insert(data)
-      .returning("")
-    return true 
+      .returning("*")
+    return newTask[0] 
   } catch (err) {
     console.error("Error creating task:", err)
   }

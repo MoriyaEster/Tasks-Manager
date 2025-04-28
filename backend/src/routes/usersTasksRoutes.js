@@ -6,9 +6,9 @@ const router = express.Router();
 
 router.post("/assign",createUserValidator, assignUser);
 router.delete("/remove", removeUser);
-router.get("/:userId/tasks", getAllTasksForUser);
+router.get("/tasks/:username", getAllTasksForUser);
 router.get("/:taskId/users", getAllUsersForTask);
-router.get("/tasks/:username", getAllTasksForUserByName);
+// router.get("/tasks/:username", getAllTasksForUserByName);
 router.get ("/connections", getAllTaskToUser)
 
 export default router;

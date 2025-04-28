@@ -8,8 +8,8 @@ const assignUser = async (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
     try {
-        const { userId, taskId } = req.body
-        const success = await assignUserToTask(userId, taskId);
+        const { username, taskId } = req.body
+        const success = await assignUserToTask(username, taskId);
         if (success) {
             res.json({ message: "User assigned to task successfully" });
         } else {
@@ -23,8 +23,8 @@ const assignUser = async (req, res) => {
 
 const removeUser = async (req, res) => {
     try {
-        const { userId, taskId } = req.body
-        const success = await removeUserFromTask(userId, taskId);
+        const { username, taskId } = req.body
+        const success = await removeUserFromTask(username, taskId);
 
         if (success) {
             res.json({ message: "User removed from task successfully" });
@@ -39,8 +39,8 @@ const removeUser = async (req, res) => {
 
 const getAllTasksForUser = async (req, res) => {
     try {
-        const userId = req.params.userId
-        const tasks = await getTasksForUser(userId)
+        const username = req.params.username
+        const tasks = await getTasksForUser(username)
 
         if (!tasks) {
             return res.status(404).json({ error: "Tasks not found" })

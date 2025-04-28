@@ -18,14 +18,13 @@ export const createTaskValidator = [
 ]
 
 export const createUserValidator = [
-    body('userId')
-        .not().isEmpty().withMessage('userId is required')
+    body('username')
+        .not().isEmpty().withMessage('username is required')
 ]
 
 export const createUserTaskValidator = [
-    body('userId')
-        .not().isEmpty().withMessage('User ID is required')
-        .isInt().withMessage('User ID must be an integer'),
+    body('username')
+        .not().isEmpty().withMessage('User name is required'),
 
     body('taskId')
         .not().isEmpty().withMessage('Task ID is required')

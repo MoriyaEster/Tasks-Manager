@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { LoginStyled, LabelStyled, TitleStyled, FormStyled, InputStyled, ButtonStyled } from '../styles/Login.styled';
 import { HeaderStyled, TitleHeaderStyled } from '../styles/Header.styled';
-import { useLogin } from '../LoginContext';
+import { useUser } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { url_users, url_get_user_by_name } from "../axios-handler";
@@ -9,7 +9,7 @@ import { url_users, url_get_user_by_name } from "../axios-handler";
 
 export default function Login() {
 
-    const { userName, setUserName } = useLogin('');
+    const { userName, setUserName } = useUser('');
     const [userPassword, setUserPassword] = useState('');
     const navigate = useNavigate();
 
@@ -26,7 +26,6 @@ export default function Login() {
             if (checkThePasswordCorrect === userPassword) {
                 setUserPassword('')
                 navigate('/home')
-                console.log(userPassword)
             } else {
                 alert("Worng Password.")
             }

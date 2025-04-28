@@ -15,10 +15,10 @@ const createUser = async (username, password) => {
             [USER_FIELDS.username]: username,
             [USER_FIELDS.password]: password
         }
-        const [newUser] = await db("Users")
+        const newUser = await db("Users")
             .insert(data)
-            .returning("")
-        return data
+            .returning("*")
+        return newUser[0]
     }
     catch (err) {
         console.error("Error creating user:", err)

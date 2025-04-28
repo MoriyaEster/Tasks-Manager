@@ -1,6 +1,6 @@
 import { LoginStyled, LabelStyled, TitleStyled, FormStyled, InputStyled, ButtonStyled } from '../styles/Login.styled';
 import { HeaderStyled, TitleHeaderStyled } from '../styles/Header.styled';
-import { useLogin } from '../LoginContext';
+import { useUser } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from "axios";
@@ -9,7 +9,7 @@ import { url_users } from "../axios-handler";
 
 export default function Signup() {
 
-    const { userName, setUserName } = useLogin('');
+    const { userName, setUserName } = useUser('');
     const [userPassword, setUserPassword] = useState('');
     const navigate = useNavigate();
 

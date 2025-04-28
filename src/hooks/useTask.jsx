@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { url_tasks, url_get_tasks_for_user_by_name, url_assign_task_to_user } from "../axios-handler";
-import { useLogin } from "../LoginContext";
+import { useUser } from "../context/UserContext";
 
 
 export default function useTask() {
 
     const [tasks, setTasks] = useState([])
-    const { userName } = useLogin()
+    const { userName } = useUser()
 
     // Fetch tasks from backend
     useEffect(() => {
@@ -15,13 +15,17 @@ export default function useTask() {
             try {
                 const response = await axios.get(url_get_tasks_for_user_by_name + userName)
                 setTasks(response.data)
-            } catch (err) {
-                console.error("Error fetching tasks:", err)
+            } catch (error) {
+                if (error.response && error.response.status === 404) {
+                    console.log("No tasks found for this user.");
+                } else {
+                    console.error("Failed to fetch tasks from backend:", error);
+                }
             }
         };
 
         fetchTasks()
-    }, [])
+    }, [userName])
 
     // Add a new task
     const addTask = async (title, status, body, date) => {
@@ -35,6 +39,14 @@ export default function useTask() {
 
             const newTask = response.data
             setTasks((prev) => [...prev, newTask])
+            try {
+                await axios.post(url_assign_task_to_user, {
+                    username: userName,
+                    taskId: newTask.id
+                })
+            } catch (err) {
+                console.error("Error assigning task to user:", err)
+            }
         } catch (err) {
             console.error("Error creating task:", err)
         }

@@ -1,10 +1,10 @@
 import { ExitButtonStyled, HeaderStyled, TitleHeaderStyled} from "../styles/Header.styled"
-import { useLogin } from "../LoginContext";
+import { useUser } from "../context/UserContext";
 import { useNavigate } from 'react-router-dom';
 
 
 export default function Header() {
-    const {userName} = useLogin('')
+    const {userName} = useUser('')
     const navigate = useNavigate()
 
     function handleLogOut(){
