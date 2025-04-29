@@ -57,6 +57,31 @@ export const SelectStyled = styled.select`
     font-size: 1.2em;
 `;
 
+export const SelectBoxStyled = styled.div`
+    width: 100%;
+    padding: 6px 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: white;
+`;
+
+export const CheckboxLabelStyled = styled.label`
+    display: block;
+    font-size: 1.2em;
+    margin-bottom: 5px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #f9f9f9;
+    }
+
+    input {
+        margin-right: 8px;
+    }
+`;
+
 export const ButtonStyled = styled.button`
     background-color: #f1356d;
     color: #fff;

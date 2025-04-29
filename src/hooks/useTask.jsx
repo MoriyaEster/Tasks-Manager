@@ -28,7 +28,8 @@ export default function useTask() {
     }, [userName])
 
     // Add a new task
-    const addTask = async (title, status, body, date) => {
+    const addTask = async (title, status, body, date, users) => {
+
         try {
             const response = await axios.post(url_tasks, {
                 title,
@@ -39,13 +40,18 @@ export default function useTask() {
 
             const newTask = response.data
             setTasks((prev) => [...prev, newTask])
-            try {
-                await axios.post(url_assign_task_to_user, {
-                    username: userName,
-                    taskId: newTask.id
-                })
-            } catch (err) {
-                console.error("Error assigning task to user:", err)
+
+            const allUsers = [...users, userName]
+
+            for (const user of allUsers) {
+                try {
+                    await axios.post(url_assign_task_to_user, {
+                        username: user,
+                        taskId: newTask.id
+                    })
+                } catch (err) {
+                    console.error("Error assigning task to user:", err)
+                }
             }
         } catch (err) {
             console.error("Error creating task:", err)
