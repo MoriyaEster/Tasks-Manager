@@ -15,3 +15,5 @@ export const url_get_user_by_name = url_users + "username/";
 export const url_assign_task_to_user = url_users_tasks + "assign/";
 export const url_remove_task_from_user = url_users_tasks + "remove/";
 export const url_get_tasks_for_user_by_name = url_users_tasks + "tasks/";
+
+export const url_get_users_for_task = url_users_tasks + "{taskId}/users"

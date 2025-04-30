@@ -38,3 +38,25 @@ export const ButtonStyled = styled.button`
         background-color: darkblue;
     }
 `;
+
+export const UserListStyled = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+`;
+
+export const UserItemStyled = styled.label`
+    display: block;
+    font-size: 1.2em;
+    margin-bottom: 5px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #f9f9f9;
+    }
+
+    input {
+        margin-right: 8px;
+    }
+`;

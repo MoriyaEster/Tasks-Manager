@@ -29,14 +29,15 @@ const removeUserFromTask = async (userName, taskId) => {
 const getUsersForTask = async (taskId) => {
     try {
         const users = await db("UsersTasks as ut")
-            .join("Users as u", "ut.userId", "u.id")
+            .join("Users as u", "ut.username", "u.username")
             .where("ut.taskId", taskId)
-            .select("u.id", "u.username")
-        return users
+            .select("u.id", "u.username");
+
+        return users;
     } catch (err) {
-        console.error("Error fetching users for task:", err)
+        console.error("Error fetching users for task:", err);
     }
-}
+};
 
 const getTasksForUser = async (userNmae) => {
     try {
