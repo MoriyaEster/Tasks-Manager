@@ -4,7 +4,7 @@ import { useDraggable } from "@dnd-kit/core";
 import { TaskContext } from "../context/TaskContext";
 import DateDialog from "./DateDialog";
 import axios, { all } from "axios";
-import { url_tasks, url_users, url_get_users_for_task } from "../axios-handler";
+import { url_tasks, url_users, url_get_users_for_task, url_assign_task_to_user, url_remove_task_from_user } from "../axios-handler";
 
 
 export default function Task(props) {
@@ -64,7 +64,7 @@ export default function Task(props) {
         }
     }
 
-    const handleChangeUsers = (e) => {
+    const handleChangeUsers = async (e) => {
         const { checked, value } = e.target;
         const selectedUser = allUsers.find(u => u.username === value);
         if (!selectedUser) return;
@@ -74,6 +74,20 @@ export default function Task(props) {
                 ? [...prev, selectedUser]
                 : prev.filter(u => u.username !== value)
         );
+        try {
+            if (checked) {
+                await axios.post(url_assign_task_to_user, { username: value, taskId: props.id });
+            } else {
+                console.log(url_remove_task_from_user, { username: value, taskId: props.id }) //debug line
+                await axios.delete(url_remove_task_from_user, { username: value, taskId: props.id });
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                console.log("No users found.");
+            } else {
+                console.error("Failed to fetch users from backend:", error);
+            }
+        }
     };
 
     const handleClose = () => {

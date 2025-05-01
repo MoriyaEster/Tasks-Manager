@@ -26,6 +26,10 @@ const removeUser = async (req, res) => {
         const { username, taskId } = req.body
         const success = await removeUserFromTask(username, taskId);
 
+        console.log("username", username)
+        console.log("taskId", taskId)
+        console.log("success", success)
+
         if (success) {
             res.json({ message: "User removed from task successfully" });
         } else {
@@ -54,7 +58,6 @@ const getAllTasksForUser = async (req, res) => {
 const getAllUsersForTask = async (req, res) => {
     try {
         const taskId = req.params.taskId
-        console.log("Fetching users for task:", taskId); // Debugging line
         const users = await getUsersForTask(taskId)
 
         if (!users) {

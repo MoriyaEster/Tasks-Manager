@@ -15,14 +15,16 @@ const assignUserToTask = async (user_name, task_id) => {
     }
 }
 
-const removeUserFromTask = async (userName, taskId) => {
+const removeUserFromTask = async (user_name, task_id) => {
     try {
+        console.log("user_name", user_name) //debug line
+        console.log("task_id", task_id) //debug line
         const rowsAffected = await db("UsersTasks")
-            .where({ userName, taskId })
+            .where({ username: user_name, taskId: task_id })
             .del()
         return rowsAffected > 0
     } catch (err) {
-        console.error("Error assigning user to task:", err);
+        console.error("Error delete user from task:", err);
     }
 }
 
