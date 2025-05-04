@@ -1,4 +1,5 @@
 import db from "../config/db.js";
+import bcrypt from "bcrypt";
 
 const getUsers = async () => {
     try {
@@ -11,9 +12,10 @@ const getUsers = async () => {
 
 const createUser = async (username, password) => {
     try {
+        const hashedPassword = await bcrypt.hash(password, 10)
         const data = {
             [USER_FIELDS.username]: username,
-            [USER_FIELDS.password]: password
+            [USER_FIELDS.password]: hashedPassword
         }
         const newUser = await db("Users")
             .insert(data)

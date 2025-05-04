@@ -4,7 +4,7 @@ import { HeaderStyled, TitleHeaderStyled } from '../styles/Header.styled';
 import { useUser } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { url_users, url_get_user_by_name } from "../axios-handler";
+import { url_login } from "../axios-handler";
 
 
 export default function Login() {
@@ -21,16 +21,22 @@ export default function Login() {
             return;
         }
         try {
-            const user = await axios.get(url_get_user_by_name + userName)
-            const checkThePasswordCorrect = user.data.password
-            if (checkThePasswordCorrect === userPassword) {
-                setUserPassword('')
-                navigate('/home')
-            } else {
-                alert("Worng Password.")
-            }
+            const response = await axios.post(url_login, {
+                username: userName,
+                password: userPassword
+            });
+
+            alert("Login successful");
+            setUserPassword('');
+            navigate('/home');
         } catch (err) {
-            console.error("Error checking password:", err)
+            if (err.response?.status === 401) {
+                alert("Incorrect password.");
+            } else if (err.response?.status === 404) {
+                alert("User not found.");
+            } else {
+                console.error("Error logging in:", err);
+            }
         }
     }
 

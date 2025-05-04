@@ -6,6 +6,8 @@ if (import.meta.env.VITE_API_URL) {
     base_url = "http://localhost:8080/";
 }
 
+export const url_login = base_url + "login/";
+
 export const url_tasks = base_url + "tasks/";
 export const url_users = base_url + "users/";
 export const url_users_tasks = base_url + "usersTasks/";

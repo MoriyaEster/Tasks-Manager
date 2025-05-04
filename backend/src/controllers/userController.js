@@ -1,6 +1,25 @@
 import { getUsers, createUser, getUserById, getUserByName, deleteUser } from "../models/userModel.js"
 import { validationResult } from "express-validator";
+import bcrypt from 'bcrypt';
 
+const loginUser = async (req, res) => {
+    try {
+        console.log("req.body = ", req.body)
+        const { username, password } = req.body;
+        const user = await getUserByName(username);
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ error: "Wrong Password" });
+        }
+        res.status(200).json({ message: "Login successful" });
+    } catch (err) {
+        console.error("Error logging in user:", err);
+        res.status(500).json({ error: "Failed to login user" });
+    }
+}
 const getAllUsers = async (req, res) => {
     try {
         const users = await getUsers()
@@ -25,7 +44,7 @@ const getUserWithId = async (req, res) => {
     }
 }
 
-const geyUserWithName = async (req, res) => {
+const getUserWithName = async (req, res) => {
     try {
         const userName = req.params.username
         const user = await getUserByName(userName)
@@ -71,4 +90,4 @@ const removeUser = async (req, res) => {
     }
 }
 
-export { getAllUsers, getUserWithId, geyUserWithName as getUser, addUser, removeUser }
+export { loginUser, getAllUsers, getUserWithId, getUserWithName as getUser, addUser, removeUser }
