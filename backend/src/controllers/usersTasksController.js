@@ -23,12 +23,13 @@ const assignUser = async (req, res) => {
 
 const removeUser = async (req, res) => {
     try {
+        console.log("req.body = ", req.body)//debug line
         const { username, taskId } = req.body
         const success = await removeUserFromTask(username, taskId);
 
-        console.log("username", username)
-        console.log("taskId", taskId)
-        console.log("success", success)
+        console.log("username", username) //debug line
+        console.log("taskId", taskId) //debug line
+        console.log("success", success) //debug line
 
         if (success) {
             res.json({ message: "User removed from task successfully" });

@@ -5,7 +5,7 @@ import { TaskContext } from "../context/TaskContext";
 import DateDialog from "./DateDialog";
 import axios, { all } from "axios";
 import { url_tasks, url_users, url_get_users_for_task, url_assign_task_to_user, url_remove_task_from_user } from "../axios-handler";
-
+import { useUser } from "../context/UserContext";
 
 export default function Task(props) {
 
@@ -14,14 +14,17 @@ export default function Task(props) {
     const [date, setDate] = useState(props.time);
     const [updateDate, setUpdateDate] = useState(false);
 
-    const [allUsers, setAllUsers] = useState([])
+    const [otherUsers, setotherUsers] = useState([])
     const [usersConnected, setUsersConnected] = useState([])
 
+    const { userName } = useUser()
+
     useEffect(() => {
-        const fetchAllUsers = async () => {
+        const fetchotherUsers = async () => {
             try {
                 const allUsersResponse = await axios.get(url_users)
-                setAllUsers(allUsersResponse.data)
+                const otherUsers = allUsersResponse.data.filter(user => user.username !== userName);
+                setotherUsers(otherUsers)
             } catch (error) {
                 if (error.response && error.response.status === 404) {
                     console.log("No users found.");
@@ -30,8 +33,8 @@ export default function Task(props) {
                 }
             }
         }
-        fetchAllUsers()
-    }, [])
+        fetchotherUsers()
+    }, [userName])
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -66,7 +69,7 @@ export default function Task(props) {
 
     const handleChangeUsers = async (e) => {
         const { checked, value } = e.target;
-        const selectedUser = allUsers.find(u => u.username === value);
+        const selectedUser = otherUsers.find(u => u.username === value);
         if (!selectedUser) return;
 
         setUsersConnected(prev =>
@@ -79,7 +82,12 @@ export default function Task(props) {
                 await axios.post(url_assign_task_to_user, { username: value, taskId: props.id });
             } else {
                 console.log(url_remove_task_from_user, { username: value, taskId: props.id }) //debug line
-                await axios.delete(url_remove_task_from_user, { username: value, taskId: props.id });
+                await axios.delete(url_remove_task_from_user, {
+                    data: {
+                        username: value,
+                        taskId: props.id
+                    }
+                })
             }
         } catch (error) {
             if (error.response && error.response.status === 404) {
@@ -126,7 +134,7 @@ export default function Task(props) {
             <TimeStyled>{date?.split('T')[0]}</TimeStyled>
 
             <UserListStyled>
-                {allUsers.map((user) => (
+                {otherUsers.map((user) => (
                     <UserItemStyled key={user.id}>
                         <input
                             type="checkbox"

@@ -4,10 +4,11 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function Header() {
-    const {userName} = useUser('')
+    const {userName, setUserName} = useUser('')
     const navigate = useNavigate()
 
     function handleLogOut(){
+        setUserName('')
         navigate('/login')
     }
 

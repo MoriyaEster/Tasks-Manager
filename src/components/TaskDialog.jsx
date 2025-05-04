@@ -22,7 +22,6 @@ export default function TaskDialog(props) {
             try {
                 const usersResponse = await axios.get(url_users);
                 const otherUsers = usersResponse.data.filter(user => user.username !== userName);
-                console.log("otherUsers", otherUsers)
                 setUsers(otherUsers);
             } catch (error) {
                 if (error.response && error.response.status === 404) {
