@@ -12,7 +12,8 @@ const getUsers = async () => {
 
 const createUser = async (username, password) => {
     try {
-        const hashedPassword = await bcrypt.hash(password, 10)
+        password = password.trim()
+        const hashedPassword = await bcrypt.hash(String(password), 10)
         const data = {
             [USER_FIELDS.username]: username,
             [USER_FIELDS.password]: hashedPassword
