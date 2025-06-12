@@ -36,7 +36,6 @@ A web-based task management app inspired by Trello, allowing multiple users to c
 
 ## 📸 Screenshots
 
-```
 ![Login Screen](screenshots/login.png)
 ![Signup Screen](screenshots/signup.png)
 ![Task Board](screenshots/board2.png)
